@@ -3,6 +3,7 @@
   hosts: backend
   vars:
      login_host: db.expense.fun
+     login_password: ExpenseApp@1
   tasks:
   - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
@@ -42,4 +43,29 @@
     ansible.builtin.command: npm install
     args: # to go particular directory
        chdir: /app   
+
+  - name: copy backend service
+    ansible.builtin.service:
+       src: backend.service
+       dest: /etc/systemd/system/backend.service
+
+    - name: install python mysql dependencies
+      ansible.builtin.pip:
+       name:
+       - PyMySQL
+       - cryptography #for passwords it is necessary 
+       executable: pip3.9 #ansible using python 3.9 if version changes like pip3.11 for python version 3.11   
+
+    - name: import data into mysql
+      community.mysql.mysql_db:
+         login_user: root   
+         login_password: "{{login_password}}"
+         login_host: "{{login_host}}"
+         target: /app/schema/backend.sql
+         state: import #we can use dump also but for that we need to install mysql dump
+         name: all #to dump all the data
+
+    - name: deamon reload
+      ansible.builtin.systemd_service:
+       deamon_reload: true
 

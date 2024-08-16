@@ -24,8 +24,8 @@
 
   - name: create app directory 
     ansible.builtin.file:
-    path: /app
-    state: directory
+       path: /app
+       state: directory
 
   - name: download backend code
     ansible.builtin.get_url:
@@ -36,4 +36,10 @@
     ansible.builtin.unarchive: #unarchive-->unzip ; archive-->zip
      src: /tmp/backend.zip   # by default checks in ansible server
      dest: /app
+     remote_src: yes
+
+  - name: install npm dependencies
+    ansible.builtin.command: npm install
+    args: # to go particular directory
+       chdir: /app   
 

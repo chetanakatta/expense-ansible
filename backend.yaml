@@ -65,9 +65,9 @@
          state: import #we can use dump also but for that we need to install mysql dump
          name: all #to dump all the data
 
-  - name: deamon reload
+  - name: daemon reload
     ansible.builtin.systemd_service:
-       deamon_reload: true
+       daemon_reload: true
 
   - name: start and enable backend service
     ansible.builtin.service:

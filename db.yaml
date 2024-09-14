@@ -4,10 +4,10 @@
   vars:
      login_host: db.expense.fun
      mysql_root_password: ExpenseApp@1
-  vars_prompt:
-    - name: mysql_root_password
-      prompt: please enter mysql root password
-      private: no   
+  #vars_prompt:
+  #  - name: mysql_root_password
+  #    prompt: please enter mysql root password
+  #    private: no   
   tasks: 
   - name: install MySQL server
     ansible.builtin.dnf:
